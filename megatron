@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+MONTH=$1
+YEAR=$2
+
+TOKEN=$(curl -s -X POST --data "grant_type=client_credentials&client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET" https://api.intra.42.fr/oauth/token | jq '.access_token' | tr -d '"')
+
+curl -s -g -H "Authorization: Bearer $TOKEN" "https://api.intra.42.fr/v2/achievements/63/users?page=1&filter[pool_year]=$YEAR&filter[pool_month]=$MONTH&filter[primary_campus_id]=22" | jq ".[].login"
